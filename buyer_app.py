@@ -15,6 +15,7 @@ model, encoders, target_enc = load_model()
 
 buyers = ['AgroBazaar Pvt Ltd', 'Krishi Mandal', 'Sarkari Procurement Center',
           'FieldFresh Traders', 'GreenYield Buyer Group']
+
 # Buyer contact info with contact person
 buyer_info = {
     'AgroBazaar Pvt Ltd': {
@@ -39,7 +40,7 @@ buyer_info = {
     }
 }
 
-st.title("🌾Connect With Buyer's🌾")
+st.title("🌾 Connect With Buyer's 🌾")
 
 with st.form("predict"):
     crop = st.text_input("Crop Type", "Wheat")
@@ -81,15 +82,13 @@ with st.form("predict"):
             else:
                 input_df[col] = le.transform([le.classes_[0]])
 
-       pred_index = model.predict(input_df)[0]
-       best_buyer = target_enc.inverse_transform([pred_index])[0]
-        
+        pred_index = model.predict(input_df)[0]
+        best_buyer = target_enc.inverse_transform([pred_index])[0]
+
         # Get contact info
-       info = buyer_info.get(best_buyer, {})
-        
+        info = buyer_info.get(best_buyer, {})
+
         # Display result
-       st.success(f"✅ Recommended Best Buyer: {best_buyer}")
-       st.markdown(f"📞 **Contact:** {info.get('contact', 'N/A')}")
-       st.markdown(f"👤 **Contact Person:** {info.get('contact_person', 'N/A')}")
-
-
+        st.success(f"✅ Recommended Best Buyer: {best_buyer}")
+        st.markdown(f"📞 **Contact:** {info.get('contact', 'N/A')}")
+        st.markdown(f"👤 **Contact Person:** {info.get('contact_person', 'N/A')}")
