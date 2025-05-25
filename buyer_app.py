@@ -51,7 +51,7 @@ with st.form("predict"):
     buyer_type = st.selectbox("Preferred Buyer Type", ["Private", "Government"])
     urgency = st.slider("Time Urgency (days)", 1, 7, 3)
     season = st.selectbox("Season", ["Rabi", "Kharif"])
-    past_buyer = st.selectbox("Historical Buyer Deal", buyers)
+
 
     if st.form_submit_button("Predict Best Buyer"):
         sample = {
@@ -63,7 +63,7 @@ with st.form("predict"):
             'Preferred_Buyer_Type': buyer_type,
             'Time_Urgency': urgency,
             'Season': season,
-            'Historical_Buyer_Deals': past_buyer
+            
         }
 
         for buyer in buyers:
@@ -76,11 +76,13 @@ with st.form("predict"):
 
         # Encode input
         for col in encoders:
-            le = encoders[col]
-            if input_df[col].iloc[0] in le.classes_:
-                input_df[col] = le.transform(input_df[col])
-            else:
-                input_df[col] = le.transform([le.classes_[0]])
+        if col == "Historical_Buyer_Deals":
+            continue  # skip encoding this column now
+        le = encoders[col]
+        if input_df[col].iloc[0] in le.classes_:
+            input_df[col] = le.transform(input_df[col])
+        else:
+            input_df[col] = le.transform([le.classes_[0]])
 
         pred_index = model.predict(input_df)[0]
         best_buyer = target_enc.inverse_transform([pred_index])[0]
