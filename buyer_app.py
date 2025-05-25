@@ -40,7 +40,7 @@ buyer_info = {
     }
 }
 
-st.title("🌾 Connect With Buyer's 🌾")
+st.title("🌾 Best Buyer Prediction for Farmers 🌾")
 
 with st.form("predict"):
     crop = st.text_input("Crop Type", "Wheat")
@@ -51,7 +51,7 @@ with st.form("predict"):
     buyer_type = st.selectbox("Preferred Buyer Type", ["Private", "Government"])
     urgency = st.slider("Time Urgency (days)", 1, 7, 3)
     season = st.selectbox("Season", ["Rabi", "Kharif"])
-    # Removed Historical Buyer Deal input
+    past_buyer = st.selectbox("Historical Buyer Deal", buyers)
 
     if st.form_submit_button("Predict Best Buyer"):
         sample = {
@@ -62,10 +62,11 @@ with st.form("predict"):
             'Expected_Price': exp_price,
             'Preferred_Buyer_Type': buyer_type,
             'Time_Urgency': urgency,
-            'Season': season
-            # Removed Historical_Buyer_Deals key
+            'Season': season,
+            'Historical_Buyer_Deals': past_buyer
         }
 
+        # Add random features per buyer
         for buyer in buyers:
             key = buyer.replace(" ", "_").replace(".", "").replace(",", "")
             sample[f'Offered_Price_{key}'] = random.randint(1500, 2600)
@@ -74,10 +75,8 @@ with st.form("predict"):
 
         input_df = pd.DataFrame([sample])
 
-        # Encode input columns except Historical_Buyer_Deals
+        # Encode categorical features using loaded encoders
         for col in encoders:
-            if col == "Historical_Buyer_Deals":
-                continue  # skip this column now
             le = encoders[col]
             if input_df[col].iloc[0] in le.classes_:
                 input_df[col] = le.transform(input_df[col])
@@ -87,10 +86,8 @@ with st.form("predict"):
         pred_index = model.predict(input_df)[0]
         best_buyer = target_enc.inverse_transform([pred_index])[0]
 
-        # Get buyer contact info
         info = buyer_info.get(best_buyer, {})
 
-        # Show results
         st.success(f"✅ Recommended Best Buyer: {best_buyer}")
         st.markdown(f"📞 **Contact:** {info.get('contact', 'N/A')}")
         st.markdown(f"👤 **Contact Person:** {info.get('contact_person', 'N/A')}")
