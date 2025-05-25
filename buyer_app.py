@@ -40,7 +40,7 @@ buyer_info = {
     }
 }
 
-st.title("🌾 Best Buyer Prediction for Farmers 🌾")
+st.title("🌾 Connect with Buyer's 🌾")
 
 with st.form("predict"):
     crop = st.text_input("Crop Type", "Wheat")
@@ -88,6 +88,6 @@ with st.form("predict"):
 
         info = buyer_info.get(best_buyer, {})
 
-        st.success(f"✅ Recommended Best Buyer: {best_buyer}")
+        st.success(f"✅ Recommended Buyer: {best_buyer}")
         st.markdown(f"📞 **Contact:** {info.get('contact', 'N/A')}")
         st.markdown(f"👤 **Contact Person:** {info.get('contact_person', 'N/A')}")
