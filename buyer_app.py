@@ -81,12 +81,15 @@ with st.form("predict"):
             else:
                 input_df[col] = le.transform([le.classes_[0]])
 
-        pred_index = model.predict(input_df)[0]
-        best_buyer = target_enc.inverse_transform([pred_index])[0]
-
+       pred_index = model.predict(input_df)[0]
+       best_buyer = target_enc.inverse_transform([pred_index])[0]
         
-            # Display result
-        st.success(f"✅ Recommended Best Buyer: {best_buyer}")
-        st.markdown(f"📞 **Contact:** {info.get('contact', 'N/A')}")
-        st.markdown(f"👤 **Contact Person:** {info.get('contact_person', 'N/A')}")
+        # Get contact info
+       info = buyer_info.get(best_buyer, {})
+        
+        # Display result
+       st.success(f"✅ Recommended Best Buyer: {best_buyer}")
+       st.markdown(f"📞 **Contact:** {info.get('contact', 'N/A')}")
+       st.markdown(f"👤 **Contact Person:** {info.get('contact_person', 'N/A')}")
+
 
