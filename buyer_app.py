@@ -16,7 +16,7 @@ model, encoders, target_enc = load_model()
 buyers = ['AgroBazaar Pvt Ltd', 'Krishi Mandal', 'Sarkari Procurement Center',
           'FieldFresh Traders', 'GreenYield Buyer Group']
 
-st.title("🌾 Connect with Buyer's around you")
+st.title("🌾 Connect with Buyer's near you")
 
 with st.form("predict"):
     crop = st.text_input("Crop Type", "Wheat")
