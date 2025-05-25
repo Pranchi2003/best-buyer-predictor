@@ -89,6 +89,6 @@ with st.form("predict"):
         info = buyer_info.get(best_buyer, {})
 
         # Display result
-        st.success(f"✅ Recommended Best Buyer: {best_buyer}")
+        st.success(f"✅ Recommended Buyer: {best_buyer}")
         st.markdown(f"📞 **Contact:** {info.get('contact', 'N/A')}")
         st.markdown(f"👤 **Contact Person:** {info.get('contact_person', 'N/A')}")
